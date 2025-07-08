@@ -13,7 +13,7 @@ function Login() {
   const onSubmit = async (data) => {
     const success = await login(data.email, data.password);
     if (success) {
-      navigate('/home'); // 🔁 Redirige a la ruta /home
+      navigate('/home'); //  Redirige a la ruta /home
     }
     reset();
   };
