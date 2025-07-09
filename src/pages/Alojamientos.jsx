@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { CirclePlus, MapPin, Info, Trash2, Pencil } from "lucide-react";
+import { MapPin, Info, Trash2, Pencil, Menu } from "lucide-react";
 import { getAccommodations } from "../services/accommodationService";
+import NewAlojamiento from "../components/NewAlojamiento";
 
 export default function Alojamientos() {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeView, setActiveView] = useState("alojamientos");
   const [accommodations, setAccommodations] = useState([]);
 
   useEffect(() => {
@@ -20,76 +22,115 @@ export default function Alojamientos() {
   }, []);
 
   return (
-    <div className="p-6">
-      {/* Botón y formulario desplegable */}
-      <div className="flex justify-between items-center pb-4 mb-4">
-        <h1 className="text-2xl font-bold">Alojamientos</h1>
+    <div className="min-h-screen bg-gray-100">
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-400 transition flex items-center gap-2"
-        >
-          <CirclePlus size={18} />
-          {open ? "Cerrar formulario" : "Nuevo Alojamiento"}
+      {/* NAVBAR MOBILE */}
+      <nav className="bg-white shadow px-4 py-3 flex justify-between items-center sticky top-0 z-50 lg:hidden">
+        <h1 className="text-xl font-bold text-gray-800">Kodigo App</h1>
+        <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-800">
+          <Menu size={24} />
         </button>
-      </div>
+      </nav>
 
-      {open && (
-        <form className="space-y-4 bg-gray-100 p-4 rounded-md shadow max-w-md">
-          {/* Inputs del formulario */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Nombre</label>
-            <input
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="Nombre del alojamiento"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Correo</label>
-            <input
-              type="email"
-              className="w-full p-2 border border-gray-300 rounded-md"
-              placeholder="correo@ejemplo.com"
-            />
-          </div>
+      {/* Menú desplegable mobile */}
+      {menuOpen && (
+        <div className="bg-white shadow-md p-4 space-y-2 lg:hidden">
           <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+            onClick={() => {
+              setActiveView("alojamientos");
+              setMenuOpen(false);
+            }}
+            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "alojamientos" ? "font-bold" : ""
+              }`}
           >
-            Guardar
+            Alojamientos
           </button>
-        </form>
+          <button
+            onClick={() => {
+              setActiveView("reservaciones");
+              setMenuOpen(false);
+            }}
+            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "reservaciones" ? "font-bold" : ""
+              }`}
+          >
+            Reservaciones
+          </button>
+          <NewAlojamiento />
+        </div>
       )}
 
-      {/* Lista de alojamientos desde la API */}
-      <div className="mt-6 space-y-4">
-      {/* recorremos la info de la api */}
-        {accommodations.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white rounded-md shadow p-4 flex justify-between items-start"
-          >
-            <div>
-              <h2 className="text-lg font-bold">{item.name}</h2>
-              <div className="text-sm text-gray-600 flex items-center gap-2 mt-1">
-                <MapPin size={14} /> {item.address || "Dirección no disponible"}
-              </div>
-              <div className="text-sm text-gray-500 flex items-center gap-2 mt-1">
-                <Info size={14} /> {item.description || "Sin descripción"}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button className="text-blue-600 hover:text-blue-800">
-                <Pencil size={16} />
-              </button>
-              <button className="text-red-600 hover:text-red-800">
-                <Trash2 size={16} />
-              </button>
-            </div>
+      {/*  BOTÓN Y FORMULARIO EN PANTALLAS GRANDES */}
+      <div className="hidden lg:block">
+        {activeView === "alojamientos" && (
+          <div className="flex flex-wrap justify-between items-center px-4 pb-4 mb-4">
+            <h1 className="text-2xl font-bold">Alojamientos</h1>
+            <NewAlojamiento />
           </div>
-        ))}
+        )}
+      </div>
+
+      {/*  CONTENIDO PRINCIPAL */}
+      <div className="mt-6 space-y-4 px-4 ">
+        {activeView === "alojamientos" ? (
+          accommodations.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-md shadow p-4 flex justify-between items-start hover:shadow-xl"
+            >
+              <div className="lg:text-lg text-xsS text-wrap leading-loose w-full m-1">
+                <h2 className="flex items-start font-extrabold mb-4 ">{item.name}</h2>
+
+                {/* responsive para pantallas grandes */}
+                <div className="hidden md:block">
+                  <div className=" text-gray-600 flex items-center gap-2 mt-1 ">
+                    <MapPin size={14} /> {item.address || "Dirección no disponible"}
+                  </div>
+                </div>
+
+                 {/* responsive para pantallas pequeñas */}
+                <div className="sm:hidden text-justify">
+                  <div className=" text-gray-600 flex items-center gap-2 mt-1 ">
+                  {item.address || "Dirección no disponible"}
+                  </div>
+                </div>
+
+                {/* responsive para pantallas grandes */}
+                <div className="hidden md:block">
+                  <div className=" text-gray-500 flex items-center gap-2 mt-1 ">
+                    <Info size={14} /> {item.description || "Sin descripción"}
+                  </div>
+                </div>
+
+                 {/* responsive para pantallas pequeñas */}
+                <div className="sm:hidden  text-justify">
+                  <div className=" text-gray-500 flex items-center gap-2 mt-1 " >
+                    {item.description ? item.description.slice(0, 80) + (item.description.length > 100 ? "..." : "") : "Sin descripción"}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2 m-2">
+                <button className="text-blue-600 hover:text-blue-800">
+                  <Pencil size={16} />
+                </button>
+                <button className="text-red-600 hover:text-red-800">
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white rounded-md shadow p-4 text-gray-700">
+            <h2 className="text-lg font-bold">Reservaciones</h2>
+            <p>Aquí se mostrarán las reservaciones próximamente.</p>
+
+             {/* aqui agregar lo del calendario*/}
+
+
+            
+          </div>
+        )}
       </div>
     </div>
   );
 }
+

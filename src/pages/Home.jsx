@@ -1,7 +1,6 @@
 import { Routes, Route, Outlet} from "react-router-dom";
 import Aside from "../components/Aside";
-import Alojamientos from "./Alojamientos";
-import Reservaciones from "./Reservaciones";
+
 
 
 export default function Home() {

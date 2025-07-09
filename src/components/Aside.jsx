@@ -20,7 +20,7 @@ export default function Aside() {
     }`;
 
   return (
-    <aside className="w-64 h-screen p-4 border-r bg-white flex flex-col justify-between">
+    <aside className="w-64 h-screen p-4 border-r bg-white flex flex-col justify-between hidden lg:block">
       <div>
         <div className="flex items-center gap-2 mb-6 px-2 ">
           <LayoutGrid size={22} className="text-gray-600" />

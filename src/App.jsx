@@ -25,6 +25,7 @@ function App() {
         <Route index element={<Alojamientos />} /> {/* default al entrar a /home */}
         <Route path="alojamientos" element={<Alojamientos />} />
         <Route path="reservaciones" element={<Reservaciones />} />
+        
       </Route>
     </Routes>
   );
