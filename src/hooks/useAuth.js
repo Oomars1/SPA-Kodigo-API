@@ -11,11 +11,11 @@ export function useAuth() {
       setLoading(true);
       setError(null);
       const token = await loginUser(email, password);
-      localStorage.setItem('token', token);
-      return true; // ✅ login exitoso
+      sessionStorage.setItem('token', token);
+      return true; //  login exitoso
     } catch (err) {
       setError('Credenciales inválidas o error del servidor.');
-      return false; // ❌ login fallido
+      return false; //  login fallido
     } finally {
       setLoading(false);
     }

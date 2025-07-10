@@ -13,7 +13,7 @@ function Login() {
   const onSubmit = async (data) => {
     const success = await login(data.email, data.password);
     if (success) {
-      navigate('/home'); // 🔁 Redirige a la ruta /home
+      navigate('/home'); //  Redirige a la ruta /home
     }
     reset();
   };
@@ -40,7 +40,7 @@ function Login() {
             
             {/* Email */}
             <div>
-              <label className="text-lg font-medium">Correo Electrónico</label>
+              <label className="text-lg flex items-start font-medium ">Correo Electrónico</label>
               <div className="relative mt-2">
                 <Mail className="absolute inset-y-3 left-0 w-10" size={20} />
                 <input
