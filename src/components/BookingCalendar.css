@@ -1,6 +1,12 @@
-/* estilos extra (opcional) */
-.fc-event {
+.fc-button {
+    padding: 0.4em 0.6em !important;
+    font-size: 0.75rem !important;
+    border-radius: 6px !important;
+    background-color: #3b82f6 !important;
     color: white !important;
-    font-weight: bold;
-    border-radius: 4px;
+    border: none !important;
+}
+
+.fc-button:hover {
+    background-color: #2563eb !important;
 }

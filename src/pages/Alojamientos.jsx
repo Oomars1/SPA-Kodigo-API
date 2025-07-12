@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { MapPin, Info, Trash2, Pencil, Menu } from "lucide-react";
+import { MapPin, Info, Trash2, Pencil, Menu, Calendar } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { getAccommodations } from "../services/accommodationService";
 import NewAlojamiento from "../components/NewAlojamiento";
 
@@ -7,11 +8,12 @@ export default function Alojamientos() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState("alojamientos");
   const [accommodations, setAccommodations] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getAccommodations(); // <-- usa Axios
+        const data = await getAccommodations();
         setAccommodations(data);
       } catch (error) {
         console.error("Error al obtener alojamientos:", error);
@@ -40,8 +42,7 @@ export default function Alojamientos() {
               setActiveView("alojamientos");
               setMenuOpen(false);
             }}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "alojamientos" ? "font-bold" : ""
-              }`}
+            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "alojamientos" ? "font-bold" : ""}`}
           >
             Alojamientos
           </button>
@@ -50,16 +51,34 @@ export default function Alojamientos() {
               setActiveView("reservaciones");
               setMenuOpen(false);
             }}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "reservaciones" ? "font-bold" : ""
-              }`}
+            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "reservaciones" ? "font-bold" : ""}`}
           >
             Reservaciones
+          </button>
+          <button
+            onClick={() => {
+              navigate("/home/calendario");
+              setMenuOpen(false);
+            }}
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 text-blue-600 font-medium flex items-center gap-2"
+>
+            <Calendar size={18} /> Calendario
           </button>
           <NewAlojamiento />
         </div>
       )}
 
-      {/*  BOTÓN Y FORMULARIO EN PANTALLAS GRANDES */}
+      {/* Botón en pantallas grandes */}
+      <div className="hidden lg:block px-4 pb-4 mb-2 flex justify-end">
+        <button
+          onClick={() => navigate("/home/calendario")}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
+        >
+          <Calendar size={18} /> Ir al Calendario
+        </button>
+      </div>
+
+      {/* Título y formulario */}
       <div className="hidden lg:block">
         {activeView === "alojamientos" && (
           <div className="flex flex-wrap justify-between items-center px-4 pb-4 mb-4">
@@ -69,7 +88,7 @@ export default function Alojamientos() {
         )}
       </div>
 
-      {/*  CONTENIDO PRINCIPAL */}
+      {/* Contenido principal */}
       <div className="mt-6 space-y-4 px-4 ">
         {activeView === "alojamientos" ? (
           accommodations.map((item) => (
@@ -77,35 +96,19 @@ export default function Alojamientos() {
               key={item.id}
               className="bg-white rounded-md shadow p-4 flex justify-between items-start hover:shadow-xl"
             >
-              <div className="lg:text-lg text-xsS text-wrap leading-loose w-full m-1">
-                <h2 className="flex items-start font-extrabold mb-4 ">{item.name}</h2>
+              <div className="lg:text-lg text-xs text-wrap leading-loose w-full m-1">
+                <h2 className="flex items-start font-extrabold mb-4">{item.name}</h2>
 
-                {/* responsive para pantallas grandes */}
-                <div className="hidden md:block">
-                  <div className=" text-gray-600 flex items-center gap-2 mt-1 ">
-                    <MapPin size={14} /> {item.address || "Dirección no disponible"}
-                  </div>
+                <div className="hidden md:block text-gray-600 flex items-center gap-2 mt-1">
+                  <MapPin size={14} /> {item.address || "Dirección no disponible"}
                 </div>
+                <div className="sm:hidden text-gray-600 mt-1">{item.address || "Dirección no disponible"}</div>
 
-                 {/* responsive para pantallas pequeñas */}
-                <div className="sm:hidden text-justify">
-                  <div className=" text-gray-600 flex items-center gap-2 mt-1 ">
-                  {item.address || "Dirección no disponible"}
-                  </div>
+                <div className="hidden md:block text-gray-500 flex items-center gap-2 mt-1">
+                  <Info size={14} /> {item.description || "Sin descripción"}
                 </div>
-
-                {/* responsive para pantallas grandes */}
-                <div className="hidden md:block">
-                  <div className=" text-gray-500 flex items-center gap-2 mt-1 ">
-                    <Info size={14} /> {item.description || "Sin descripción"}
-                  </div>
-                </div>
-
-                 {/* responsive para pantallas pequeñas */}
-                <div className="sm:hidden  text-justify">
-                  <div className=" text-gray-500 flex items-center gap-2 mt-1 " >
-                    {item.description ? item.description.slice(0, 80) + (item.description.length > 100 ? "..." : "") : "Sin descripción"}
-                  </div>
+                <div className="sm:hidden text-gray-500 mt-1">
+                  {item.description ? item.description.slice(0, 80) + (item.description.length > 100 ? "..." : "") : "Sin descripción"}
                 </div>
               </div>
               <div className="flex gap-2 m-2">
@@ -122,15 +125,9 @@ export default function Alojamientos() {
           <div className="bg-white rounded-md shadow p-4 text-gray-700">
             <h2 className="text-lg font-bold">Reservaciones</h2>
             <p>Aquí se mostrarán las reservaciones próximamente.</p>
-
-             {/* aqui agregar lo del calendario*/}
-
-
-            
           </div>
         )}
       </div>
     </div>
   );
 }
-

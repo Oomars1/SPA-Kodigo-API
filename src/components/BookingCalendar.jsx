@@ -21,13 +21,13 @@ const BookingCalendar = () => {
                 let bgColor;
                 switch (booking.status) {
                     case 'CONFIRMED':
-                        bgColor = 'green';
+                        bgColor = '#22c55e'; // verde
                         break;
                     case 'CANCELLED':
-                        bgColor = 'red';
+                        bgColor = '#ef4444'; // rojo
                         break;
                     default:
-                        bgColor = 'yellow';
+                        bgColor = '#facc15'; // amarillo
                 }
 
                 return {
@@ -88,14 +88,14 @@ const BookingCalendar = () => {
         }
     };
 
-    if (loading) return <div>Cargando calendario...</div>;
-    if (error) return <div className="text-red-500">Error: {error}</div>;
-    if (events.length === 0) return <div>No hay reservaciones disponibles.</div>;
+    if (loading) return <div className="p-6">Cargando calendario...</div>;
+    if (error) return <div className="text-red-500 p-6">Error: {error}</div>;
+    if (events.length === 0) return <div className="p-6">No hay reservaciones disponibles.</div>;
 
     return (
-        <div className="p-6">
+        <div className="p-4 lg:p-6">
             <h2 className="text-2xl font-bold mb-4">Calendario de Reservaciones</h2>
-            <div style={{ height: '80vh' }}>
+            <div className="min-h-[70vh] w-full overflow-y-auto pb-16">
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
                     initialView="dayGridMonth"
@@ -107,10 +107,9 @@ const BookingCalendar = () => {
                     events={events}
                     eventClick={handleEventClick}
                     eventContent={(eventInfo) => (
-                        <div className="fc-event-main px-1 py-0.5 text-xs truncate">
-                            <strong>{eventInfo.timeText}</strong>
-                            <i>{eventInfo.event.title}</i>
-                            <br />
+                        <div className="fc-event-main px-1 py-0.5 text-xs truncate text-white">
+                            <strong>{eventInfo.timeText}</strong><br />
+                            <i>{eventInfo.event.title}</i><br />
                             <small>
                                 Estado: <b>{eventInfo.event.extendedProps.status}</b><br />
                                 Entrada: {eventInfo.event.extendedProps.checkInDate}<br />

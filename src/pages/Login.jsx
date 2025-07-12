@@ -8,7 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 function Login() {
   const { register, handleSubmit, reset } = useForm();
   const { login, loading, error } = useAuth();
-  const navigate = useNavigate(); // 🧭
+  const navigate = useNavigate(); 
 
   const onSubmit = async (data) => {
     const success = await login(data.email, data.password);
