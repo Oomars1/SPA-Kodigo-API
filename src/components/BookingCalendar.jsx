@@ -4,60 +4,93 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import BookingService from '../services/BookingService';
+import Swal from 'sweetalert2';
+import './BookingCalendar.css'; // Estilos personalizados
 
 const BookingCalendar = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchBookings = async () => {
-            try {
-                const data = await BookingService.getBookings();
-                console.log('Datos de la API:', data);
+    const loadBookings = async () => {
+        try {
+            const data = await BookingService.getBookings();
+            if (!Array.isArray(data)) throw new Error('La respuesta no es un arreglo');
 
-                if (!Array.isArray(data)) {
-                    throw new Error('La respuesta no es un arreglo');
+            const calendarEvents = data.map((booking) => {
+                let bgColor;
+                switch (booking.status) {
+                    case 'CONFIRMED':
+                        bgColor = 'green';
+                        break;
+                    case 'CANCELLED':
+                        bgColor = 'red';
+                        break;
+                    default:
+                        bgColor = 'yellow';
                 }
 
-                //  **********************  Mapear datos *************************
-                const calendarEvents = data.map((booking) => ({
+                return {
                     id: booking.id,
                     title: `${booking.status} - ${booking.booking}`,
                     start: new Date(booking.check_in_date),
                     end: new Date(booking.check_out_date),
+                    backgroundColor: bgColor,
+                    borderColor: bgColor,
                     extendedProps: {
                         status: booking.status || 'Sin estado',
                         user: booking.user || 'Sin huésped',
                         checkInDate: booking.check_in_date,
                         checkOutDate: booking.check_out_date,
                     },
-                }));
+                };
+            });
 
-                console.log('Eventos generados:', calendarEvents);
-                setEvents(calendarEvents);
-            } catch (error) {
-                console.error('Error al cargar las reservas:', error);
-                setError(error.message || 'Error desconocido');
-            } finally {
-                setLoading(false);
-            }
-        };
+            setEvents(calendarEvents);
+        } catch (err) {
+            console.error('Error al cargar reservas:', err);
+            setError(err.message || 'Error desconocido');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchBookings();
+    useEffect(() => {
+        loadBookings();
     }, []);
 
-    if (loading) {
-        return <div>Cargando calendario...</div>;
-    }
+    const handleEventClick = async (clickInfo) => {
+        const bookingId = clickInfo.event.id;
 
-    if (error) {
-        return <div className="text-red-500">Error al cargar las reservas: {error}</div>;
-    }
+        const result = await Swal.fire({
+            title: 'Cambiar estado',
+            text: 'Selecciona el nuevo estado de la reservación:',
+            icon: 'question',
+            input: 'select',
+            inputOptions: {
+                CONFIRMED: 'Confirmar',
+                CANCELLED: 'Cancelar',
+            },
+            inputPlaceholder: 'Selecciona estado',
+            showCancelButton: true,
+            confirmButtonText: 'Actualizar',
+            cancelButtonText: 'Cancelar',
+        });
 
-    if (events.length === 0) {
-        return <div>No hay reservaciones disponibles.</div>;
-    }
+        if (result.isConfirmed && result.value) {
+            try {
+                await BookingService.updateBookingStatus(bookingId, result.value);
+                Swal.fire('Éxito', 'Estado actualizado correctamente.', 'success');
+                await loadBookings(); // recarga eventos
+            } catch (error) {
+                Swal.fire('Error', 'No se pudo actualizar el estado.', 'error');
+            }
+        }
+    };
+
+    if (loading) return <div>Cargando calendario...</div>;
+    if (error) return <div className="text-red-500">Error: {error}</div>;
+    if (events.length === 0) return <div>No hay reservaciones disponibles.</div>;
 
     return (
         <div className="p-6">
@@ -69,9 +102,10 @@ const BookingCalendar = () => {
                     headerToolbar={{
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
                     }}
                     events={events}
+                    eventClick={handleEventClick}
                     eventContent={(eventInfo) => (
                         <div className="fc-event-main px-1 py-0.5 text-xs truncate">
                             <strong>{eventInfo.timeText}</strong>

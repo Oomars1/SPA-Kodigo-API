@@ -30,40 +30,4 @@ function App() {
     </Routes>
   );
 }
-// function App() {
-//   return (
-//     <Routes>
-//     {/* ruta padre */}
-//       <Route path="/" element={<Login />} />
-//     {/* los encerramos en la funcion de privacidad del path para que este proteja nuestra pagna */}
-//       <Route
-//         path="/home/*"
-//         element={
-//           <PrivateRoute>
-//             <Home />
-//           </PrivateRoute>
-//         }
-//       />
-
-//       <Route
-//         path="/alojamientos"
-//         element={
-//           <PrivateRoute>
-//             <Alojamientos />
-//           </PrivateRoute>
-//         }
-//       />
-
-//       <Route
-//         path="/reservaciones"
-//         element={
-//           <PrivateRoute>
-//             <Reservaciones />
-//           </PrivateRoute>
-//         }
-//       />
-//     </Routes>
-//   );
-// }
-
 export default App;
