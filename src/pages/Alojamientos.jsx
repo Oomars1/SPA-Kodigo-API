@@ -37,34 +37,24 @@ export default function Alojamientos() {
       {/* Menú desplegable mobile */}
       {menuOpen && (
         <div className="bg-white shadow-md p-4 space-y-2 lg:hidden">
-          <button
-            onClick={() => {
-              setActiveView("alojamientos");
-              setMenuOpen(false);
-            }}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "alojamientos" ? "font-bold" : ""}`}
+          <a
+            href="/home/alojamientos"
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
           >
             Alojamientos
-          </button>
-          <button
-            onClick={() => {
-              setActiveView("reservaciones");
-              setMenuOpen(false);
-            }}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "reservaciones" ? "font-bold" : ""}`}
+          </a>
+          <a
+            href="/home/reservaciones"
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
           >
             Reservaciones
-          </button>
-          <button
-            onClick={() => {
-              navigate("/home/calendario");
-              setMenuOpen(false);
-            }}
-            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 text-blue-600 font-medium flex items-center gap-2"
->
-            <Calendar size={18} /> Calendario
-          </button>
-          <NewAlojamiento />
+          </a>
+          <a
+            href="/home/calendario"
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-bold"
+          >
+            Calendario
+          </a>
         </div>
       )}
 

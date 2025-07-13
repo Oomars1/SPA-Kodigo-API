@@ -1,6 +1,6 @@
 import api from "./api";
 
-// 🔍 Obtener todas las reservaciones registradas
+// ---------------Obtener todas las reservaciones registradas---------------
 const getBookings = async () => {
     try {
         const response = await api.get("/api/V1/bookings");
@@ -11,7 +11,7 @@ const getBookings = async () => {
     }
 };
 
-// 📝 Crear nueva reservación
+// ---------------Crear nueva reservación---------------
 const createBooking = async (data, token) => {
     try {
         const response = await api.post("/api/V1/booking", data, {
@@ -27,7 +27,7 @@ const createBooking = async (data, token) => {
     }
 };
 
-// 🛠️ Actualizar el estado de una reservación
+// ---------------Actualizar el estado de una reservación---------------
 const updateBookingStatus = async (bookingId, newStatus) => {
     try {
         const token = sessionStorage.getItem("token");
@@ -48,7 +48,7 @@ const updateBookingStatus = async (bookingId, newStatus) => {
     }
 };
 
-// 👤 Obtener la lista de usuarios disponibles
+// ---------------Obtener la lista de usuarios disponibles---------------
 const getUsers = async () => {
     try {
         const response = await api.get("/api/V1/users");
@@ -59,7 +59,7 @@ const getUsers = async () => {
     }
 };
 
-// 🏨 Obtener la lista de alojamientos disponibles
+// ---------------Obtener la lista de alojamientos disponibles---------------
 const getAccommodations = async () => {
     try {
         const response = await api.get("/api/V1/accomodations");
