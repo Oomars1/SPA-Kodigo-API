@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Alojamientos from "./pages/Alojamientos";
 import Reservaciones from "./pages/Reservaciones";
 import PrivateRoute from "./components/PrivateRoute";
+import EditAlojamiento from "./components/EditAlojamiento";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       >
         <Route index element={<Alojamientos />} /> {/* default al entrar a /home */}
         <Route path="alojamientos" element={<Alojamientos />} />
+        <Route path="alojamientos/:id" element={<EditAlojamiento />} />
         <Route path="reservaciones" element={<Reservaciones />} />
         
       </Route>

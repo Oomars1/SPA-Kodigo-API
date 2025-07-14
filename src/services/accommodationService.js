@@ -15,3 +15,10 @@ export const createAccommodation = async (data) => {
   const response = await api.post("/api/V1/accomodation", data);
   return response.data;
 };
+
+export async function updateAccommodation(id, data) {
+  const response = await api.put(`/api/V1/accomodation/${id}`,
+    data
+  );
+  return response.data;
+}
