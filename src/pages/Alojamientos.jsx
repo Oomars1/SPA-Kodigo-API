@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { MapPin, Info, Pencil, Menu, LogOut, Hotel, Calendar } from "lucide-react";
+import { MapPin, Info, Trash2, Pencil, Menu, Calendar, LogOut, Hotel,} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { getAccommodations } from "../services/accommodationService";
 import NewAlojamiento from "../components/NewAlojamiento";
 import EditAlojamiento from "../components/EditAlojamiento";
@@ -11,6 +12,7 @@ export default function Alojamientos() {
   const [accommodations, setAccommodations] = useState([]); //Este es el estado que contiene la data que esta en la API, y es la que muestro en alojamientos
   const [modalOpen, setModalOpen] = useState(false); // Este estado es para abrir el modal de editar la data 
   const [alojamientoSeleccionado, setAlojamientoSeleccionado] = useState(null); //con este mando la card seleccionada para editar al componente editAlojamiento
+
   const navigate = useNavigate();
 
 
@@ -18,6 +20,7 @@ export default function Alojamientos() {
   //hook para generar efecto que muestre la data de la APi asi como tambien llamarla en newAlojamiento
    async function fetchData() {
       try {
+
         const data = await getAccommodations(); // <-- esto es para traer la data de la API 
         setAccommodations(data); // aqui estamos añadiendo la api al estado, que es lo que se mostrara
       } catch (error) {
@@ -68,41 +71,40 @@ export default function Alojamientos() {
       {/* Menú desplegable mobile */}
       {menuOpen && (
         <div className="bg-white shadow-md p-4 space-y-2 lg:hidden">
-          <button
-            onClick={() => {
-              setActiveView("alojamientos");
-              setMenuOpen(false);
-            }}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "alojamientos" ? "font-bold" : ""
-              }`}
+          <a
+            href="/home/alojamientos"
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
           >
-           <div className="flex justify-start gap-2 "> <Hotel className="text-gray-700" size={20} /> Alojamientos</div>
-          </button>
-          <button
-            onClick={() => {
-              setActiveView("reservaciones");
-              setMenuOpen(false);
-            }}
-            className={`block w-full text-left px-2 py-1 rounded hover:bg-gray-200 ${activeView === "reservaciones" ? "font-bold" : ""
-              }`}
+
+          </a>
+          <a
+            href="/home/reservaciones"
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
           >
-            <div className="flex justify-start gap-2 "><Calendar className="text-gray-700" size={20} /> Reservaciones</div>
-          </button>
-          <NewAlojamiento />
-           <button
-            onClick={handleLogout}
-            
-            className="flex items-center border-t-2 gap-2 px-3 py-2  text-sm font-medium text-gray-800 hover:bg-red-100 transition"
+            Reservaciones
+          </a>
+          <a
+            href="/home/calendario"
+            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-bold"
           >
-            <LogOut size={20} />
-            Cerrar sesión
-          </button>
+            Calendario
+          </a>
 
         </div>
         
       )}
 
-      {/*  BOTÓN Y FORMULARIO EN PANTALLAS GRANDES */}
+      {/* Botón en pantallas grandes */}
+      <div className="hidden lg:block px-4 pb-4 mb-2 flex justify-end">
+        <button
+          onClick={() => navigate("/home/calendario")}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2"
+        >
+          <Calendar size={18} /> Ir al Calendario
+        </button>
+      </div>
+
+      {/* Título y formulario */}
       <div className="hidden lg:block">
         {activeView === "alojamientos" && (
           <div className="flex flex-wrap justify-between items-center px-4 pb-4 mb-4">
@@ -112,8 +114,9 @@ export default function Alojamientos() {
         )}
       </div>
 
+
       {/*  CONTENIDO PRINCIPAL */}
-     
+
       <div className="mt-6 space-y-4 px-4 ">
          
         {activeView === "alojamientos" ? (
@@ -123,35 +126,19 @@ export default function Alojamientos() {
               key={item.id}
               className="bg-white rounded-md shadow p-4 flex justify-between items-start hover:shadow-xl"
             >
-              <div className="lg:text-lg text-xsS text-wrap leading-loose w-full m-1">
-                <h2 className="flex items-start font-extrabold mb-4 ">{item.name}</h2>
+              <div className="lg:text-lg text-xs text-wrap leading-loose w-full m-1">
+                <h2 className="flex items-start font-extrabold mb-4">{item.name}</h2>
 
-                {/* responsive para pantallas grandes */}
-                <div className="hidden md:block">
-                  <div className=" text-gray-600 flex items-center gap-2 mt-1 ">
-                    <MapPin size={14} /> {item.address || "Dirección no disponible"}
-                  </div>
+                <div className="hidden md:block text-gray-600 flex items-center gap-2 mt-1">
+                  <MapPin size={14} /> {item.address || "Dirección no disponible"}
                 </div>
+                <div className="sm:hidden text-gray-600 mt-1">{item.address || "Dirección no disponible"}</div>
 
-                 {/* responsive para pantallas pequeñas */}
-                <div className="sm:hidden text-justify">
-                  <div className=" text-gray-600 flex items-center gap-2 mt-1 ">
-                  {item.address || "Dirección no disponible"}
-                  </div>
+                <div className="hidden md:block text-gray-500 flex items-center gap-2 mt-1">
+                  <Info size={14} /> {item.description || "Sin descripción"}
                 </div>
-
-                {/* responsive para pantallas grandes */}
-                <div className="hidden md:block">
-                  <div className=" text-gray-500 flex items-center gap-2 mt-1 ">
-                    <Info size={14} /> {item.description || "Sin descripción"}
-                  </div>
-                </div>
-
-                 {/* responsive para pantallas pequeñas */}
-                <div className="sm:hidden  text-justify">
-                  <div className=" text-gray-500 flex items-center gap-2 mt-1 " >
-                    {item.description ? item.description.slice(0, 80) + (item.description.length > 100 ? "..." : "") : "Sin descripción"}
-                  </div>
+                <div className="sm:hidden text-gray-500 mt-1">
+                  {item.description ? item.description.slice(0, 80) + (item.description.length > 100 ? "..." : "") : "Sin descripción"}
                 </div>
               </div>
               {/* Botón de editar */}
@@ -170,7 +157,6 @@ export default function Alojamientos() {
             <h2 className="text-lg font-bold">Reservaciones</h2>
             <p>Aquí se mostrarán las reservaciones próximamente.</p>
 
-             {/* aqui agregar lo del calendario*/}
           </div>
         )}
 
@@ -187,4 +173,3 @@ export default function Alojamientos() {
     </div>
   );
 }
-
