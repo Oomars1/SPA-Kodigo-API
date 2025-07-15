@@ -1,12 +1,61 @@
-# React + Vite
+# 🏡 Proyecto Alojamientos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SPA (Single Page Application) desarrollada con **React.js**, diseñada para gestionar alojamientos y reservaciones, consumiendo una API REST externa.  
+Inspirada visualmente en un diseño de **Figma**, esta aplicación implementa funcionalidades completas de tipo **CRUD** tanto para alojamientos como para reservaciones.
 
-Currently, two official plugins are available:
+## 🌐 Link de la API
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+📘 Documentación oficial de la API:  
+👉 [https://apibookingsaccomodations-production.up.railway.app/api/documentation](https://apibookingsaccomodations-production.up.railway.app/api/documentation)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🎯 Funcionalidades Principales
+
+### ✅ Autenticación
+- Inicio de sesión básico para acceder a la gestión.
+
+### 🏘️ Gestión de Alojamientos
+- 🔍 Ver listado de alojamientos
+- ➕ Crear un nuevo alojamiento
+- ✏️ Editar un alojamiento existente
+
+### 📆 Gestión de Reservaciones
+- 🔍 Ver listado de reservaciones
+- ➕ Crear nueva reservación
+- ❌ Cancelar reservación
+- 📅 Ver calendario de reservas por alojamiento
+
+---
+
+## 🧱 Tecnologías Utilizadas
+
+| Herramienta         | Descripción                                 |
+|---------------------|---------------------------------------------|
+| ⚛️ React.js         | Framework principal para SPA                |
+| 🎨 Tailwind CSS     | Utilizado para estilos rápidos y responsive |
+| 🧩 DaisyUI          | Componentes UI listos para usar con Tailwind|
+| 🌍 React Router     | Manejo de rutas en la aplicación            |
+| ⚙️ React Hook Form  | Manejo de formularios y validaciones        |
+| 🎯 Lucide Icons     | Iconografía moderna y elegante              |
+| 📄 Axios            | Cliente HTTP para consumir la API           |
+
+---
+
+## 🧪 Instalación del Proyecto
+
+```bash
+# Clonar el repositorio
+git clone https://github.com/Oomars1/SPA-Kodigo-API.git
+cd proyecto-alojamientos
+
+# Instalar dependencias
+npm install
+
+# Librerías adicionales si tiene problemas con dependencias o quiere aplicar estas en otro proyecto externo.
+npm install react-router-dom
+npm install daisyui
+npm install lucide-react
+npm install axios
+npm install react-hook-form
+
