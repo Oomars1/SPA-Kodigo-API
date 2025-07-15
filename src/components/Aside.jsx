@@ -19,7 +19,9 @@ export default function Aside() {
     }`;
 
   return (
-    <aside className="w-64 h-screen p-4 border-r bg-white flex flex-col justify-between hidden min-[1024px]:block">
+    <div className='hidden lg:block'>
+      <aside className="w-64 h-screen p-4 border-r bg-white flex flex-col justify-between hidden min-[1024px]:block">
+
       <div>
         <div className="flex items-center gap-2 mb-6 px-2 ">
           <LayoutGrid size={22} className="text-gray-600" />
@@ -65,6 +67,7 @@ export default function Aside() {
         Cerrar sesión
       </button>
     </aside>
+    </div>
   );
 }
 

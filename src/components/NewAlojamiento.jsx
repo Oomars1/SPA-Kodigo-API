@@ -4,15 +4,15 @@ import { createAccommodation } from '../services/accommodationService';
 import { CirclePlus } from 'lucide-react';
 import Swal from "sweetalert2";
 
-export default function NewAlojamiento() {
+export default function NewAlojamiento({ onRefresh}) {
     const { register, handleSubmit, reset } = useForm();
 
     const onSubmit = async (data) => {
         try {
             await createAccommodation(data);
+            await onRefresh();
             Swal.fire("Éxito", "Alojamiento registrado correctamente", "success");
-
-            reset(); // limpia formulario (de react-hook-form)
+            reset(); // limpia formulario 
             document.getElementById("my_modal_4").close(); // cierra el modal
 
         } catch (error) {
@@ -26,19 +26,20 @@ export default function NewAlojamiento() {
     };
     return (
         <>
+            {/* Esto fue extraido de daisyUI  */}
             {/* You can open the modal using document.getElementById('ID').showModal() method */}
-            <button className="btn flex gap-2 items-center bg-black text-white hover:bg-gray-900 flex justify-center gap-1 p-2 rounded-md" onClick={() => document.getElementById('my_modal_4').showModal()}> <CirclePlus /> Nuevo Alojamiento</button>
+            <button className="btn flex gap-2 items-centertext-white  flex justify-center gap-1 p-2 rounded-md" onClick={() => document.getElementById('my_modal_4').showModal()}> <CirclePlus /> Nuevo Alojamiento</button>
 
-            <dialog id="my_modal_4" className="modal backdrop:bg-slate-50/65 bg-slate-200 rounded-xl">
+            <dialog id="my_modal_4" className="modal backdrop:bg-slate-50/65  rounded-lg lg:w-3/12 shadow-xl sm:w-10/12">
 
                 <div className="modal-box flex justify-center items-center ">
                     <form method="dialog">
                         {/* if there is a button in form, it will close the modal */}
                         <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                     </form>
-                    <div className="modal-action mx-8 my-4">
+                    <div className="modal-action mx-8 my-4 w-10/12 ">
                         {/* Formulario */}
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-12/12  p-8">
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 sm:w-full p-8 ">
                             <h1 className='flex justify-start font bold text-xl'>Nuevo Alojamiento</h1>
                             {/* Nombre */}
                             <div>
@@ -48,7 +49,7 @@ export default function NewAlojamiento() {
                                         type="text"
                                         {...register("name", { required: true })}
                                         placeholder="Nombre del Alojamiento"
-                                        className=" input input-bordered w-full rounded-md  p-3"
+                                        className=" input input-bordered w-full rounded-md p-3 rounded-md border border-slate-600"
                                     />
                                 </div>
                             </div>
@@ -60,7 +61,7 @@ export default function NewAlojamiento() {
                                         type="text"
                                         {...register("address", { required: true })}
                                         placeholder="Dirección del alojamiento"
-                                        className=" input input-bordered w-full p-3"
+                                        className=" input input-bordered w-full p-3 rounded-md border  border-slate-600"
                                     />
                                 </div>
                             </div>
@@ -73,11 +74,10 @@ export default function NewAlojamiento() {
                                 <div className="relative mt-1">
 
                                     <textarea
-                                        className=" pl-4 textarea textarea-bordered w-full pb-12 "
+                                        className=" pl-4 textarea textarea-bordered w-full pb-12 rounded-md border border-slate-600"
                                         placeholder="Descripcion"
                                         {...register("description", { required: true })}
                                     />
-
                                 </div>
                             </div>
                             <div className='flex flex-row gap-4'>
