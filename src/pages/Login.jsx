@@ -8,7 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 function Login() {
   const { register, handleSubmit, reset } = useForm();
   const { login, loading, error } = useAuth();
-  const navigate = useNavigate(); // 🧭
+  const navigate = useNavigate(); 
 
   const onSubmit = async (data) => {
     const success = await login(data.email, data.password);
@@ -100,7 +100,7 @@ function Login() {
           <div className="text-sm text-center mt-4 font-bold">
             <p className="text-gray-600">
               <HelpCircle className="inline mr-1" size={14} />
-              ¿Necesitas ayuda? <a href="#" className="text-blue-600 hover:underline">Contacta soporte</a>
+              ¿Necesitas ayuda? <a href="#" className="text-blue-600 hover:underline">Contacta soporte Kodigo</a>
             </p>
           </div>
 
