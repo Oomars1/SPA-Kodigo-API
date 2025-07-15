@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
-import { ClipboardPlus, CalendarDays, Menu } from 'lucide-react';
+import { ClipboardPlus, CalendarDays, Menu, LogOut } from 'lucide-react';
 import Swal from 'sweetalert2';
 import BookingService from '../services/BookingService';
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Reservaciones() {
+  const navigate = useNavigate();
+  //protegemos  la pagina
+  const handleLogout = () => {
+    // Eliminar token
+    sessionStorage.removeItem("token");
+
+    // Redirigir al login
+    navigate("/");
+  };
   const [formData, setFormData] = useState({
     booking: '',
     check_in_date: '',
@@ -119,28 +129,37 @@ export default function Reservaciones() {
       </nav>
 
       {/* Menú desplegable mobile */}
-      {menuOpen && (
-        <div className="bg-white shadow-md p-4 space-y-2 lg:hidden">
-          <a
-            href="/home/alojamientos"
-            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
-          >
-            Alojamientos
-          </a>
-          <a
-            href="/home/reservaciones"
-            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-bold"
-          >
-            Reservaciones
-          </a>
-          <a
-            href="/home/calendario"
-            className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
-          >
-            Calendario
-          </a>
-        </div>
-      )}
+{menuOpen && (
+  <div className="bg-white shadow-md p-4 space-y-2 lg:hidden">
+    <a
+      href="/home/alojamientos"
+      className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
+    >
+      Alojamientos
+    </a>
+    <a
+      href="/home/reservaciones"
+      className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-bold"
+    >
+      Reservaciones
+    </a>
+    <a
+      href="/home/calendario"
+      className="block w-full text-left px-2 py-1 rounded hover:bg-gray-200 font-medium"
+    >
+      Calendario
+    </a>
+
+    {/* Botón Cerrar sesión */}
+    <button
+      onClick={handleLogout}
+      className="flex items-center gap-2 w-full px-3 py-2 mt-2 text-sm font-medium text-gray-800 hover:bg-red-100 transition"
+    >
+      <LogOut size={20} />
+      Cerrar sesión
+    </button>
+  </div>
+)}
 
       {/* CONTENIDO PRINCIPAL */}
       <div className="p-4 space-y-10">
