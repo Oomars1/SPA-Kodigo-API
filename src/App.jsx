@@ -6,9 +6,8 @@ import Home from "./pages/Home";
 import Alojamientos from "./pages/Alojamientos";
 import Reservaciones from "./pages/Reservaciones";
 import PrivateRoute from "./components/PrivateRoute";
-import Calendario from "./pages/Calendario"; 
-
-
+import Calendario from "./pages/Calendario";
+import AlojamientoDetalle from "./pages/AlojamientoPage";
 
 function App() {
   return (
@@ -24,11 +23,13 @@ function App() {
           </PrivateRoute>
         }
       >
-        <Route index element={<Alojamientos />} /> {/* default al entrar a /home */}
+        <Route index element={<Alojamientos />} />{" "}
+        {/* default al entrar a /home */}
         <Route path="alojamientos" element={<Alojamientos />} />
         {/* <Route path="alojamientos/:id" element={<EditAlojamiento />} /> */}
         <Route path="reservaciones" element={<Reservaciones />} />
-        <Route path="calendario" element={<Calendario />} />         
+        <Route path="calendario" element={<Calendario />} />
+        <Route path="/home/alojamiento/:id" element={<AlojamientoDetalle />} />
       </Route>
     </Routes>
   );
