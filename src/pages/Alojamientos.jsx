@@ -137,6 +137,7 @@ export default function Alojamientos() {
           accommodations.map((item) => (
             <div
               key={item.id}
+              onClick={() => navigate(`/home/alojamiento/${item.id}`)}
               className="bg-white rounded-md shadow p-4 flex justify-between items-start hover:shadow-xl"
             >
               <div className="lg:text-lg text-xs text-wrap leading-loose w-full m-1">
@@ -165,7 +166,10 @@ export default function Alojamientos() {
               {/* Botón de editar */}
               <div className="flex gap-2 m-2">
                 <button
-                  onClick={() => abrirModalEdicion(item)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    abrirModalEdicion(item);
+                  }}
                   className="text-dark hover:text-blue-800"
                 >
                   <Pencil size={20} />
